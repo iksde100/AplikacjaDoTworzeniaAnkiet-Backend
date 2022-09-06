@@ -19,10 +19,6 @@ app.use(
 app.use(bodyParser.json());
 app.use(cors()); // use cors
 
-app.get("/", (req, res) => {
-  res.send("Hello World!!");
-});
-
 /*
  * Run app
  *
