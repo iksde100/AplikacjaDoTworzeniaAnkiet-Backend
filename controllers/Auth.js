@@ -60,7 +60,7 @@ const loginUser = async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   // Checking if the email exists
-  const user = await Users.findOne({ email: req.body.email });
+  const user = await Users.findOne({ where: { email: req.body.email } });
   if (!user) return res.status(400).send("Email is not found");
 
   // PASSWORD IS CORRECT
