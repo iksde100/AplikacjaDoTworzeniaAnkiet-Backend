@@ -30,7 +30,7 @@ const registerUser = async (req, res) => {
   // if (emailExist) return res.status(400).send("Email is already exists");
   if (emailExist)
     return res.status(400).send({
-      message: "Email is already exists",
+      message: "Podany adres email jest już w użyciu",
     });
 
   // Hash password
@@ -68,14 +68,14 @@ const loginUser = async (req, res) => {
   const user = await Users.findOne({ where: { email: req.body.email } });
   if (!user)
     return res.status(400).send({
-      message: "Email is not found",
+      message: "Nie znaleziono adresu email",
     });
 
   // PASSWORD IS CORRECT
   const validPass = await bcrypt.compare(req.body.password, user.password);
   if (!validPass)
     return res.status(400).send({
-      message: "Invalid password",
+      message: "Niepoprawne hasło",
     });
 
   // Create and assign a token

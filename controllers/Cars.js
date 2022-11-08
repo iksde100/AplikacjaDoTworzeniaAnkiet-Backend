@@ -3,7 +3,9 @@ const Cars = require("./../models/Cars");
 // get all cars
 const getCars = async (req, res) => {
   try {
-    const cars = await Cars.findAll();
+    const cars = await Cars.findAll({
+      where: { idUser: req.user.id },
+    });
     res.send(cars);
   } catch (err) {
     console.log(err);
@@ -16,6 +18,7 @@ const getCarById = async (req, res) => {
     const car = await Cars.findAll({
       where: {
         id: req.params.id,
+        idUser: req.user.id,
       },
     });
     res.send(car[0]);
@@ -27,7 +30,10 @@ const getCarById = async (req, res) => {
 // add car
 const addCar = async (req, res) => {
   try {
-    await Cars.create(req.body);
+    await Cars.create({
+      ...req.body,
+      idUser: req.user.id,
+    });
     res.json({
       message: "Car Created",
     });
@@ -42,6 +48,7 @@ const updateCar = async (req, res) => {
     await Cars.update(req.body, {
       where: {
         id: req.params.id,
+        idUser: req.user.id,
       },
     });
     res.json({
@@ -58,6 +65,7 @@ const deleteCar = async (req, res) => {
     await Cars.destroy({
       where: {
         id: req.params.id,
+        idUser: req.user.id,
       },
     });
     res.json({

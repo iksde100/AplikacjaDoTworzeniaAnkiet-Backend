@@ -31,6 +31,10 @@ const Cars = sequelize.define(
       field: "updated_at",
       type: DataTypes.DATE,
     },
+    idUser: {
+      field: "id_user",
+      type: DataTypes.INTEGER,
+    },
   },
   {
     freezeTableName: true,
