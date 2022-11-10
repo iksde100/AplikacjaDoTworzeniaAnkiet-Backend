@@ -5,7 +5,8 @@ const jwt = require("jsonwebtoken");
 const Users = require("../models/Users");
 
 const registerSchema = Joi.object({
-  name: Joi.string().min(6).required(),
+  name: Joi.string().min(3).required(),
+  surname: Joi.string().min(3).required(),
   email: Joi.string().min(6).required().email(),
   password: Joi.string().min(6).required(),
 });
@@ -40,6 +41,7 @@ const registerUser = async (req, res) => {
   // Create a new user
   const user = {
     name: req.body.name,
+    surname: req.body.surname,
     email: req.body.email,
     password: hashPassword,
   };

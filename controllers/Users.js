@@ -9,6 +9,7 @@ const getCurrentUser = async (req, res) => {
     res.send({
       id: currentUser.id,
       name: currentUser.name,
+      surname: currentUser.surname,
       email: currentUser.email,
       createdAt: currentUser.createdAt,
     });
