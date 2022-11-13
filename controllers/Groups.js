@@ -1,75 +1,75 @@
-const Cars = require("./../models/Cars");
+const Groups = require("./../models/Groups");
 
-// get all cars
-const getCars = async (req, res) => {
+// get all groups
+const getGroups = async (req, res) => {
   try {
-    const cars = await Cars.findAll({
+    const groups = await Groups.findAll({
       where: { idUser: req.user.id },
     });
-    res.send(cars);
+    res.send(groups);
   } catch (err) {
     console.log(err);
   }
 };
 
-// get car by id
-const getCarById = async (req, res) => {
+// get group by id
+const getGroupById = async (req, res) => {
   try {
-    const car = await Cars.findAll({
+    const group = await Groups.findOne({
       where: {
         id: req.params.id,
         idUser: req.user.id,
       },
     });
-    res.send(car[0]);
+    res.send(group);
   } catch (err) {
     console.log(err);
   }
 };
 
-// add car
-const addCar = async (req, res) => {
+// add group
+const addGroup = async (req, res) => {
   try {
-    await Cars.create({
+    await Groups.create({
       ...req.body,
       idUser: req.user.id,
     });
     res.json({
-      message: "Car Created",
+      message: "Group Created",
     });
   } catch (err) {
     console.log(err);
   }
 };
 
-// update car
-const updateCar = async (req, res) => {
+// update group
+const updateGroup = async (req, res) => {
   try {
-    await Cars.update(req.body, {
+    await Groups.update(req.body, {
       where: {
         id: req.params.id,
         idUser: req.user.id,
       },
     });
     res.json({
-      message: "Car Success Updated",
+      message: "Group Success Updated",
     });
   } catch (err) {
     console.log(err);
   }
 };
 
-// delete car
-const deleteCar = async (req, res) => {
+// delete group
+const deleteGroup = async (req, res) => {
   try {
-    await Cars.destroy({
+    await Groups.destroy({
       where: {
         id: req.params.id,
         idUser: req.user.id,
       },
     });
     res.json({
-      message: "Car Success Deleted",
+      message: "Group Success Deleted",
     });
   } catch (err) {
     console.log(err);
@@ -77,9 +77,9 @@ const deleteCar = async (req, res) => {
 };
 
 module.exports = {
-  getCars,
-  getCarById,
-  addCar,
-  updateCar,
-  deleteCar,
+  getGroups,
+  getGroupById,
+  addGroup,
+  updateGroup,
+  deleteGroup,
 };

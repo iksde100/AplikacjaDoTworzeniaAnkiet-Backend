@@ -7,8 +7,8 @@
 const sequelize = require("../config/sequelize");
 const { DataTypes } = require("sequelize");
 
-const Users = sequelize.define(
-  "users",
+const Groups = sequelize.define(
+  "groups",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -17,13 +17,13 @@ const Users = sequelize.define(
     name: {
       type: DataTypes.STRING,
     },
-    surname: {
+    description: {
       type: DataTypes.STRING,
     },
-    email: {
+    city: {
       type: DataTypes.STRING,
     },
-    password: {
+    address: {
       type: DataTypes.STRING,
     },
     createdAt: {
@@ -34,10 +34,14 @@ const Users = sequelize.define(
       field: "updated_at",
       type: DataTypes.DATE,
     },
+    idUser: {
+      field: "id_user",
+      type: DataTypes.INTEGER,
+    },
   },
   {
     freezeTableName: true,
   }
 );
 
-module.exports = Users;
+module.exports = Groups;
