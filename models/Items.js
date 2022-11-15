@@ -7,21 +7,23 @@
 const sequelize = require("../config/sequelize");
 const { DataTypes } = require("sequelize");
 
-const Cars = sequelize.define(
-  "cars",
+const Items = sequelize.define(
+  "items",
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
-    brand: {
+    name: {
       type: DataTypes.STRING,
     },
-    model: {
+    pricePerDay: {
+      field: "price_per_day",
       type: DataTypes.STRING,
     },
-    valueOfCar: {
-      type: DataTypes.INTEGER,
+    isActive: {
+      field: "is_active",
+      type: DataTypes.BOOLEAN,
     },
     createdAt: {
       field: "created_at",
@@ -35,10 +37,14 @@ const Cars = sequelize.define(
       field: "id_user",
       type: DataTypes.INTEGER,
     },
+    idGroup: {
+      field: "id_group",
+      type: DataTypes.INTEGER,
+    },
   },
   {
     freezeTableName: true,
   }
 );
 
-module.exports = Cars;
+module.exports = Items;
