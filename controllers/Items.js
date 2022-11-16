@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const Items = require("./../models/Items");
 const url = require("url");
 
@@ -9,7 +10,9 @@ const getItems = async (req, res) => {
 
     const items = await Items.findAll({
       where: {
-        ...(group && { idGroup: group }),
+        ...(group && {
+          idGroup: { [Op.or]: group.split(",") },
+        }),
         idUser: req.user.id,
       },
     });
