@@ -1,70 +1,88 @@
-/*
- * Using Sequelize lib
- * types doc (https://sequelize.org/docs/v6/core-concepts/model-basics/#data-types)
- *
- */
+const Reservations = require("../models/Reservations");
+const selectData = require("./../utils/selectData");
 
-const sequelize = require("../config/sequelize");
-const { DataTypes } = require("sequelize");
-
-const Reservations = sequelize.define(
-  "reservations",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-    },
-    dateStart: {
-      field: "date_start",
-      type: DataTypes.DATE,
-    },
-    dateFinish: {
-      field: "date_finish",
-      type: DataTypes.DATE,
-    },
-    clientName: {
-      field: "client_name",
-      type: DataTypes.STRING,
-    },
-    clientSurname: {
-      field: "client_surname",
-      type: DataTypes.STRING,
-    },
-    advanceTotal: {
-      field: "advance_total",
-      type: DataTypes.FLOAT,
-    },
-    advancePaid: {
-      field: "advance_paid",
-      type: DataTypes.FLOAT,
-    },
-    discount: {
-      type: DataTypes.FLOAT,
-    },
-    priceTotal: {
-      field: "price_total",
-      type: DataTypes.FLOAT,
-    },
-    createdAt: {
-      field: "created_at",
-      type: DataTypes.DATE,
-    },
-    updatedAt: {
-      field: "updated_at",
-      type: DataTypes.DATE,
-    },
-    userId: {
-      field: "id_user",
-      type: DataTypes.INTEGER,
-    },
-    itemId: {
-      field: "id_item",
-      type: DataTypes.INTEGER,
-    },
-  },
-  {
-    freezeTableName: true,
+// get all reservations
+const getReservations = async (req, res) => {
+  try {
+    const reservations = await Reservations.findAll({
+      where: {
+        ...selectData.byUserId(req),
+      },
+    });
+    res.send(reservations);
+  } catch (err) {
+    console.log(err);
   }
-);
+};
 
-module.exports = Reservations;
+// get reservation by id
+const getReservationById = async (req, res) => {
+  try {
+    const reservation = await Reservations.findOne({
+      where: {
+        id: req.params.id,
+        ...selectData.byUserId(req),
+      },
+    });
+    res.send(reservation);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// add reservation
+const addReservation = async (req, res) => {
+  try {
+    await Reservations.create({
+      ...req.body,
+      ...selectData.byUserId(req),
+    });
+    res.json({
+      message: "Reservation Created",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// update reservation
+const updateReservation = async (req, res) => {
+  try {
+    await Reservations.update(req.body, {
+      where: {
+        id: req.params.id,
+        ...selectData.byUserId(req),
+      },
+    });
+    res.json({
+      message: "Reservation Success Updated",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// delete reservation
+const deleteReservation = async (req, res) => {
+  try {
+    await Reservations.destroy({
+      where: {
+        id: req.params.id,
+        ...selectData.byUserId(req),
+      },
+    });
+    res.json({
+      message: "Reservation Success Deleted",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = {
+  getReservations,
+  getReservationById,
+  addReservation,
+  updateReservation,
+  deleteReservation,
+};

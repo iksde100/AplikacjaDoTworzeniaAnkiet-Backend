@@ -1,10 +1,13 @@
 const Groups = require("./../models/Groups");
+const selectData = require("./../utils/selectData");
 
 // get all groups
 const getGroups = async (req, res) => {
   try {
     const groups = await Groups.findAll({
-      where: { userId: req.user.id },
+      where: {
+        ...selectData.byUserId(req),
+      },
     });
     res.send(groups);
   } catch (err) {
@@ -18,7 +21,7 @@ const getGroupById = async (req, res) => {
     const group = await Groups.findOne({
       where: {
         id: req.params.id,
-        userId: req.user.id,
+        ...selectData.byUserId(req),
       },
     });
     res.send(group);
@@ -32,7 +35,7 @@ const addGroup = async (req, res) => {
   try {
     await Groups.create({
       ...req.body,
-      userId: req.user.id,
+      ...selectData.byUserId(req),
     });
     res.json({
       message: "Group Created",
@@ -48,7 +51,7 @@ const updateGroup = async (req, res) => {
     await Groups.update(req.body, {
       where: {
         id: req.params.id,
-        userId: req.user.id,
+        ...selectData.byUserId(req),
       },
     });
     res.json({
@@ -65,7 +68,7 @@ const deleteGroup = async (req, res) => {
     await Groups.destroy({
       where: {
         id: req.params.id,
-        userId: req.user.id,
+        ...selectData.byUserId(req),
       },
     });
     res.json({
