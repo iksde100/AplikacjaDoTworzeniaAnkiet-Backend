@@ -53,11 +53,11 @@ const Reservations = sequelize.define(
       field: "updated_at",
       type: DataTypes.DATE,
     },
-    idUser: {
+    userId: {
       field: "id_user",
       type: DataTypes.INTEGER,
     },
-    idItem: {
+    itemId: {
       field: "id_item",
       type: DataTypes.INTEGER,
     },

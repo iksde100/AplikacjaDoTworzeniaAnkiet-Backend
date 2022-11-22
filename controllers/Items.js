@@ -1,6 +1,19 @@
 const { Op } = require("sequelize");
 const Items = require("./../models/Items");
 const url = require("url");
+const Groups = require("../models/Groups");
+
+// https://sebhastian.com/sequelize-join/
+// https://sequelize.org/docs/v6/other-topics/scopes/#merging-includes
+// https://sequelize.org/docs/v6/core-concepts/assocs/
+
+// common utils
+const includeGroup = () => ({
+  model: Groups,
+  attributes: {
+    exclude: ["id", "userId"],
+  },
+});
 
 // get all items
 const getItems = async (req, res) => {
@@ -11,10 +24,11 @@ const getItems = async (req, res) => {
     const items = await Items.findAll({
       where: {
         ...(group && {
-          idGroup: { [Op.or]: group.split(",") },
+          groupId: { [Op.or]: group.split(",") },
         }),
-        idUser: req.user.id,
+        userId: req.user.id,
       },
+      include: includeGroup(),
     });
     res.send(items);
   } catch (err) {
@@ -28,8 +42,9 @@ const getItemById = async (req, res) => {
     const item = await Items.findOne({
       where: {
         id: req.params.id,
-        idUser: req.user.id,
+        userId: req.user.id,
       },
+      include: includeGroup(),
     });
     res.send(item);
   } catch (err) {
@@ -42,7 +57,7 @@ const addItem = async (req, res) => {
   try {
     await Items.create({
       ...req.body,
-      idUser: req.user.id,
+      userId: req.user.id,
     });
     res.json({
       message: "Item Created",
@@ -58,7 +73,7 @@ const updateItem = async (req, res) => {
     await Items.update(req.body, {
       where: {
         id: req.params.id,
-        idUser: req.user.id,
+        userId: req.user.id,
       },
     });
     res.json({
@@ -75,7 +90,7 @@ const deleteItem = async (req, res) => {
     await Items.destroy({
       where: {
         id: req.params.id,
-        idUser: req.user.id,
+        userId: req.user.id,
       },
     });
     res.json({

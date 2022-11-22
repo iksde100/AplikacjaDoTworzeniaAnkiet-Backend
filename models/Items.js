@@ -4,8 +4,11 @@
  *
  */
 
+// https://sebhastian.com/sequelize-join/
+
 const sequelize = require("../config/sequelize");
 const { DataTypes } = require("sequelize");
+const Groups = require("./Groups");
 
 const Items = sequelize.define(
   "items",
@@ -33,11 +36,11 @@ const Items = sequelize.define(
       field: "updated_at",
       type: DataTypes.DATE,
     },
-    idUser: {
+    userId: {
       field: "id_user",
       type: DataTypes.INTEGER,
     },
-    idGroup: {
+    groupId: {
       field: "id_group",
       type: DataTypes.INTEGER,
     },
@@ -46,5 +49,8 @@ const Items = sequelize.define(
     freezeTableName: true,
   }
 );
+
+Groups.hasMany(Items);
+Items.belongsTo(Groups);
 
 module.exports = Items;

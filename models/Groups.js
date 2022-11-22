@@ -34,7 +34,7 @@ const Groups = sequelize.define(
       field: "updated_at",
       type: DataTypes.DATE,
     },
-    idUser: {
+    userId: {
       field: "id_user",
       type: DataTypes.INTEGER,
     },
