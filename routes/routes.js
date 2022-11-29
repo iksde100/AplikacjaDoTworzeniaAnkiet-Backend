@@ -1,5 +1,6 @@
 const express = require("express");
 
+const dictionaries = require("./../controllers/Dictionaries");
 const reservations = require("./../controllers/Reservations");
 const groups = require("./../controllers/Groups");
 const items = require("./../controllers/Items");
@@ -26,6 +27,9 @@ router.get("/items/:id", verify, items.getItemById);
 router.post("/items/add", verify, items.addItem);
 router.put("/items/update/:id", verify, items.updateItem);
 router.delete("/items/delete/:id", verify, items.deleteItem);
+
+router.get("/dictionaries/groups", verify, dictionaries.groups);
+router.get("/dictionaries/items", verify, dictionaries.items);
 
 router.get("/user", verify, users.getCurrentUser);
 

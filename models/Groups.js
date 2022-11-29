@@ -19,6 +19,7 @@ const Groups = sequelize.define(
     },
     description: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     city: {
       type: DataTypes.STRING,
@@ -41,7 +42,7 @@ const Groups = sequelize.define(
   },
   {
     freezeTableName: true,
-  }
+  },
 );
 
 module.exports = Groups;

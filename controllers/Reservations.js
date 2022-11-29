@@ -1,5 +1,6 @@
 const Reservations = require("../models/Reservations");
 const selectData = require("./../utils/selectData");
+const include = require("./utils/include");
 
 // get all reservations
 const getReservations = async (req, res) => {
@@ -8,6 +9,7 @@ const getReservations = async (req, res) => {
       where: {
         ...selectData.byUserId(req),
       },
+      include: [include.item(), include.group()],
     });
     res.send(reservations);
   } catch (err) {
@@ -23,6 +25,7 @@ const getReservationById = async (req, res) => {
         id: req.params.id,
         ...selectData.byUserId(req),
       },
+      include: [include.item(), include.group()],
     });
     res.send(reservation);
   } catch (err) {

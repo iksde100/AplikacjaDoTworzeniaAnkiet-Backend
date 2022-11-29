@@ -1,20 +1,8 @@
 const { Op } = require("sequelize");
 const url = require("url");
 const Items = require("./../models/Items");
-const Groups = require("../models/Groups");
 const selectData = require("./../utils/selectData");
-
-// https://sebhastian.com/sequelize-join/
-// https://sequelize.org/docs/v6/other-topics/scopes/#merging-includes
-// https://sequelize.org/docs/v6/core-concepts/assocs/
-
-// common utils
-const includeGroup = () => ({
-  model: Groups,
-  attributes: {
-    exclude: ["id", "userId"],
-  },
-});
+const include = require("./utils/include");
 
 // get all items
 const getItems = async (req, res) => {
@@ -29,7 +17,7 @@ const getItems = async (req, res) => {
         }),
         ...selectData.byUserId(req),
       },
-      include: includeGroup(),
+      include: include.group(),
     });
     res.send(items);
   } catch (err) {
@@ -45,7 +33,7 @@ const getItemById = async (req, res) => {
         id: req.params.id,
         ...selectData.byUserId(req),
       },
-      include: includeGroup(),
+      include: include.group(),
     });
     res.send(item);
   } catch (err) {

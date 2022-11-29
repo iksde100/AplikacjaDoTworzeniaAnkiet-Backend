@@ -4,8 +4,6 @@
  *
  */
 
-// https://sebhastian.com/sequelize-join/
-
 const sequelize = require("../config/sequelize");
 const { DataTypes } = require("sequelize");
 const Groups = require("./Groups");
@@ -47,7 +45,7 @@ const Items = sequelize.define(
   },
   {
     freezeTableName: true,
-  }
+  },
 );
 
 Groups.hasMany(Items);
