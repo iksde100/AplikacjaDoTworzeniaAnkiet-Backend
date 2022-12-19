@@ -70,6 +70,10 @@ const Reservations = sequelize.define(
       field: "price_total",
       type: DataTypes.FLOAT,
     },
+    paidAmount: {
+      field: "paid_amount",
+      type: DataTypes.FLOAT,
+    },
     createdAt: {
       field: "created_at",
       type: DataTypes.DATE,

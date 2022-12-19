@@ -1,12 +1,36 @@
+const { Op } = require("sequelize");
+const url = require("url");
 const Reservations = require("../models/Reservations");
 const selectData = require("./../utils/selectData");
 const include = require("./utils/include");
 
+// https://stackoverflow.com/questions/43115151/sequelize-query-to-find-all-records-that-falls-in-between-date-range
+// https://www.tabnine.com/code/javascript/functions/sequelize/between
+
 // get all reservations
 const getReservations = async (req, res) => {
   try {
+    // get params from url
+    const { from, to } = url.parse(req.url, true).query;
+
     const reservations = await Reservations.findAll({
       where: {
+        ...(from && {
+          [Op.or]: {
+            dateStart: {
+              [Op.and]: {
+                [Op.gte]: from,
+                [Op.lte]: to,
+              },
+            },
+            dateFinish: {
+              [Op.and]: {
+                [Op.gte]: from,
+                [Op.lte]: to,
+              },
+            },
+          },
+        }),
         ...selectData.byUserId(req),
       },
       include: [include.item(), include.group()],
