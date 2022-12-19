@@ -15,22 +15,23 @@ const getReservations = async (req, res) => {
 
     const reservations = await Reservations.findAll({
       where: {
-        ...(from && {
-          [Op.or]: {
-            dateStart: {
-              [Op.and]: {
-                [Op.gte]: from,
-                [Op.lte]: to,
+        ...(from &&
+          to && {
+            [Op.or]: {
+              dateStart: {
+                [Op.and]: {
+                  [Op.gte]: from,
+                  [Op.lte]: to,
+                },
+              },
+              dateFinish: {
+                [Op.and]: {
+                  [Op.gte]: from,
+                  [Op.lte]: to,
+                },
               },
             },
-            dateFinish: {
-              [Op.and]: {
-                [Op.gte]: from,
-                [Op.lte]: to,
-              },
-            },
-          },
-        }),
+          }),
         ...selectData.byUserId(req),
       },
       include: [include.item(), include.group()],
