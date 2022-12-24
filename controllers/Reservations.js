@@ -41,7 +41,7 @@ const getReservations = async (req, res) => {
       include: [include.item(), include.group()],
     });
 
-    res.send(reservations);
+    return res.send(reservations);
   } catch (err) {
     console.log(err);
   }
@@ -57,7 +57,8 @@ const getReservationById = async (req, res) => {
       },
       include: [include.item(), include.group()],
     });
-    res.send(reservation);
+
+    return res.send(reservation);
   } catch (err) {
     console.log(err);
   }
@@ -66,40 +67,49 @@ const getReservationById = async (req, res) => {
 // add reservation
 const addReservation = async (req, res) => {
   try {
-    const from = req.params.dateStart;
-    const to = req.params.dateFinish;
+    const from = req.body.dateStart;
+    const to = req.body.dateFinish;
 
-    // const reservations = await Reservations.findAll({
-    //   where: {
-    //     ...(from &&
-    //       to && {
-    //         [Op.or]: {
-    //           dateStart: {
-    //             [Op.and]: {
-    //               [Op.gte]: from,
-    //               [Op.lte]: to,
-    //             },
-    //           },
-    //           dateFinish: {
-    //             [Op.and]: {
-    //               [Op.gte]: from,
-    //               [Op.lte]: to,
-    //             },
-    //           },
-    //         },
-    //       }),
-    //     ...selectData.byUserId(req),
-    //   },
-    //   include: [include.item(), include.group()],
-    // });
+    // parse params to Date
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
 
-    // console.log(reservations);
+    const overlappingReservations = await Reservations.findAll({
+      where: {
+        itemId: req.body.itemId,
+        [Op.or]: [
+          {
+            dateStart: {
+              [Op.and]: {
+                [Op.gt]: fromDate,
+                [Op.lt]: toDate,
+              },
+            },
+          },
+          {
+            dateFinish: {
+              [Op.and]: {
+                [Op.gt]: fromDate,
+                [Op.lt]: toDate,
+              },
+            },
+          },
+        ],
+      },
+    });
+
+    if (overlappingReservations.length > 0) {
+      return res.status(409).send({
+        message: "Data rezerwacji koliduje z innymi rezerwacjami",
+        conflicts: overlappingReservations,
+      });
+    }
 
     await Reservations.create({
       ...req.body,
       ...selectData.byUserId(req),
     });
-    res.json({
+    return res.json({
       message: "Reservation Created",
     });
   } catch (err) {
@@ -110,13 +120,55 @@ const addReservation = async (req, res) => {
 // update reservation
 const updateReservation = async (req, res) => {
   try {
+    const from = req.body.dateStart;
+    const to = req.body.dateFinish;
+
+    // parse params to Date
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+
+    const overlappingReservations = await Reservations.findAll({
+      where: {
+        id: {
+          [Op.ne]: req.params.id,
+        },
+        itemId: req.body.itemId,
+        [Op.or]: [
+          {
+            dateStart: {
+              [Op.and]: {
+                [Op.gt]: fromDate,
+                [Op.lt]: toDate,
+              },
+            },
+          },
+          {
+            dateFinish: {
+              [Op.and]: {
+                [Op.gt]: fromDate,
+                [Op.lt]: toDate,
+              },
+            },
+          },
+        ],
+      },
+    });
+
+    if (overlappingReservations.length > 0) {
+      return res.status(409).send({
+        message: "Data rezerwacji koliduje z innymi rezerwacjami",
+        conflicts: overlappingReservations,
+      });
+    }
+
     await Reservations.update(req.body, {
       where: {
         id: req.params.id,
         ...selectData.byUserId(req),
       },
     });
-    res.json({
+
+    return res.json({
       message: "Reservation Success Updated",
     });
   } catch (err) {
@@ -133,7 +185,8 @@ const deleteReservation = async (req, res) => {
         ...selectData.byUserId(req),
       },
     });
-    res.json({
+
+    return res.json({
       message: "Reservation Success Deleted",
     });
   } catch (err) {
