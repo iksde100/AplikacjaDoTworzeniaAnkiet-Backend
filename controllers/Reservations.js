@@ -13,6 +13,10 @@ const getReservations = async (req, res) => {
     // get params from url
     const { from, to } = url.parse(req.url, true).query;
 
+    // parse params to Date
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+
     const reservations = await Reservations.findAll({
       where: {
         ...(from &&
@@ -20,14 +24,14 @@ const getReservations = async (req, res) => {
             [Op.or]: {
               dateStart: {
                 [Op.and]: {
-                  [Op.gte]: from,
-                  [Op.lte]: to,
+                  [Op.gte]: fromDate,
+                  [Op.lte]: toDate,
                 },
               },
               dateFinish: {
                 [Op.and]: {
-                  [Op.gte]: from,
-                  [Op.lte]: to,
+                  [Op.gte]: fromDate,
+                  [Op.lte]: toDate,
                 },
               },
             },
@@ -36,6 +40,7 @@ const getReservations = async (req, res) => {
       },
       include: [include.item(), include.group()],
     });
+
     res.send(reservations);
   } catch (err) {
     console.log(err);
@@ -61,6 +66,35 @@ const getReservationById = async (req, res) => {
 // add reservation
 const addReservation = async (req, res) => {
   try {
+    const from = req.params.dateStart;
+    const to = req.params.dateFinish;
+
+    // const reservations = await Reservations.findAll({
+    //   where: {
+    //     ...(from &&
+    //       to && {
+    //         [Op.or]: {
+    //           dateStart: {
+    //             [Op.and]: {
+    //               [Op.gte]: from,
+    //               [Op.lte]: to,
+    //             },
+    //           },
+    //           dateFinish: {
+    //             [Op.and]: {
+    //               [Op.gte]: from,
+    //               [Op.lte]: to,
+    //             },
+    //           },
+    //         },
+    //       }),
+    //     ...selectData.byUserId(req),
+    //   },
+    //   include: [include.item(), include.group()],
+    // });
+
+    // console.log(reservations);
+
     await Reservations.create({
       ...req.body,
       ...selectData.byUserId(req),
