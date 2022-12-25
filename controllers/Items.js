@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const url = require("url");
+const { commonErrors } = require("../utils/commonErrors");
 const Items = require("./../models/Items");
 const selectData = require("./../utils/selectData");
 const include = require("./utils/include");
@@ -19,9 +20,9 @@ const getItems = async (req, res) => {
       },
       include: include.group(),
     });
-    res.send(items);
+    return res.send(items);
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -35,9 +36,9 @@ const getItemById = async (req, res) => {
       },
       include: include.group(),
     });
-    res.send(item);
+    return res.send(item);
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -48,11 +49,11 @@ const addItem = async (req, res) => {
       ...req.body,
       ...selectData.byUserId(req),
     });
-    res.json({
+    return res.json({
       message: "Item Created",
     });
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -65,11 +66,11 @@ const updateItem = async (req, res) => {
         ...selectData.byUserId(req),
       },
     });
-    res.json({
+    return res.json({
       message: "Item Success Updated",
     });
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -82,11 +83,11 @@ const deleteItem = async (req, res) => {
         ...selectData.byUserId(req),
       },
     });
-    res.json({
+    return res.json({
       message: "Item Success Deleted",
     });
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 

@@ -14,13 +14,7 @@ const registerSchema = Joi.object({
 // register user
 const registerUser = async (req, res) => {
   // LETS VALIDATE THE DATA BEFORE WE A USER
-  // I sposób
-  // const validation = registerSchema.validate(req.body);
-  // res.send(validation);
-
-  // II sposób
   const { error } = registerSchema.validate(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
   if (error) return res.status(400).send(error);
 
   // Checking if the user is already on database
@@ -28,7 +22,6 @@ const registerUser = async (req, res) => {
     where: { email: req.body.email },
   });
 
-  // if (emailExist) return res.status(400).send("Email is already exists");
   if (emailExist)
     return res.status(400).send({
       message: "Podany adres email jest już w użyciu",
@@ -82,11 +75,9 @@ const loginUser = async (req, res) => {
 
   // Create and assign a token
   const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET);
-  res.header("auth-token", token).send({
+  return res.header("auth-token", token).send({
     jwt: token,
   });
-
-  // res.send("Logged in!");
 };
 
 module.exports = {

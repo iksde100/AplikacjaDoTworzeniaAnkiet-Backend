@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const url = require("url");
+const { commonErrors } = require("../utils/commonErrors");
 const Groups = require("./../models/Groups");
 const Items = require("./../models/Items");
 const selectData = require("./../utils/selectData");
@@ -13,9 +14,9 @@ const groups = async (req, res) => {
       },
       attributes: ["id", "name"],
     });
-    res.send(groups);
+    return res.send(groups);
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -34,9 +35,9 @@ const items = async (req, res) => {
       },
       attributes: ["id", "name"],
     });
-    res.send(items);
+    return res.send(items);
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 

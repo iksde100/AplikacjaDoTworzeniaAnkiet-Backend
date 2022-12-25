@@ -1,3 +1,4 @@
+const { commonErrors } = require("../utils/commonErrors");
 const Groups = require("./../models/Groups");
 const selectData = require("./../utils/selectData");
 
@@ -9,9 +10,9 @@ const getGroups = async (req, res) => {
         ...selectData.byUserId(req),
       },
     });
-    res.send(groups);
+    return res.send(groups);
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -24,9 +25,9 @@ const getGroupById = async (req, res) => {
         ...selectData.byUserId(req),
       },
     });
-    res.send(group);
+    return res.send(group);
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -37,11 +38,11 @@ const addGroup = async (req, res) => {
       ...req.body,
       ...selectData.byUserId(req),
     });
-    res.json({
+    return res.json({
       message: "Group Created",
     });
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -54,11 +55,11 @@ const updateGroup = async (req, res) => {
         ...selectData.byUserId(req),
       },
     });
-    res.json({
+    return res.json({
       message: "Group Success Updated",
     });
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -71,11 +72,11 @@ const deleteGroup = async (req, res) => {
         ...selectData.byUserId(req),
       },
     });
-    res.json({
+    return res.json({
       message: "Group Success Deleted",
     });
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 

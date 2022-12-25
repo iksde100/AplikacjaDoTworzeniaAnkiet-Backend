@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const url = require("url");
 const Reservations = require("../models/Reservations");
+const { commonErrors } = require("../utils/commonErrors");
 const selectData = require("./../utils/selectData");
 const include = require("./utils/include");
 
@@ -43,7 +44,7 @@ const getReservations = async (req, res) => {
 
     return res.send(reservations);
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -60,7 +61,7 @@ const getReservationById = async (req, res) => {
 
     return res.send(reservation);
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -129,7 +130,7 @@ const addReservation = async (req, res) => {
       message: "Reservation Created",
     });
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -204,7 +205,7 @@ const updateReservation = async (req, res) => {
       message: "Reservation Success Updated",
     });
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
@@ -222,7 +223,7 @@ const deleteReservation = async (req, res) => {
       message: "Reservation Success Deleted",
     });
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 

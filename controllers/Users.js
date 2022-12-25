@@ -1,4 +1,5 @@
 const Users = require("../models/Users");
+const { commonErrors } = require("../utils/commonErrors");
 
 // get current user
 const getCurrentUser = async (req, res) => {
@@ -6,7 +7,7 @@ const getCurrentUser = async (req, res) => {
     const currentUser = await Users.findOne({
       where: { id: req.user.id },
     });
-    res.send({
+    return res.send({
       id: currentUser.id,
       name: currentUser.name,
       surname: currentUser.surname,
@@ -14,7 +15,7 @@ const getCurrentUser = async (req, res) => {
       createdAt: currentUser.createdAt,
     });
   } catch {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 
