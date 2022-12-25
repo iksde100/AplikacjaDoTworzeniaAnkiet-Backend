@@ -94,6 +94,22 @@ const addReservation = async (req, res) => {
               },
             },
           },
+          {
+            dateStart: {
+              [Op.lte]: fromDate,
+            },
+            dateFinish: {
+              [Op.gt]: fromDate,
+            },
+          },
+          {
+            dateStart: {
+              [Op.lte]: fromDate,
+            },
+            dateFinish: {
+              [Op.gt]: toDate,
+            },
+          },
         ],
       },
     });
@@ -148,6 +164,22 @@ const updateReservation = async (req, res) => {
                 [Op.gt]: fromDate,
                 [Op.lt]: toDate,
               },
+            },
+          },
+          {
+            dateStart: {
+              [Op.lte]: fromDate,
+            },
+            dateFinish: {
+              [Op.gt]: fromDate,
+            },
+          },
+          {
+            dateStart: {
+              [Op.lte]: fromDate,
+            },
+            dateFinish: {
+              [Op.gt]: toDate,
             },
           },
         ],
