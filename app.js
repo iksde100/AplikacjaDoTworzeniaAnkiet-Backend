@@ -14,7 +14,7 @@ app.use(express.json()); // use express json
 app.use(
   bodyParser.urlencoded({
     extended: true,
-  })
+  }),
 );
 app.use(bodyParser.json());
 app.use(cors()); // use cors
@@ -41,7 +41,7 @@ app.use(Router);
 const connectionHandlers = require("./utils/connectionHandlers");
 const mysqlConnection = require("./config/database");
 mysqlConnection.connect((error) => {
-  !error ? connectionHandlers.success() : connectionHandlers.error();
+  !error ? connectionHandlers.success() : connectionHandlers.error(error);
 });
 
 mysqlConnection.end();

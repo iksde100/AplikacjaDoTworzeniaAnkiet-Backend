@@ -1,6 +1,7 @@
 const Joi = require("@hapi/joi");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { commonErrors } = require("../utils/commonErrors");
 
 const Users = require("../models/Users");
 
@@ -40,11 +41,11 @@ const registerUser = async (req, res) => {
   };
   try {
     await Users.create(user);
-    res.json({
+    return res.json({
       message: "User Registered",
     });
   } catch (err) {
-    console.log(err);
+    return commonErrors[500];
   }
 };
 

@@ -1,35 +1,24 @@
 const express = require("express");
 
-const dictionaries = require("./../controllers/Dictionaries");
-const reservations = require("./../controllers/Reservations");
-const groups = require("./../controllers/Groups");
-const items = require("./../controllers/Items");
+const answers = require("../controllers/Answers");
+const surveys = require("../controllers/Surveys");
 const users = require("./../controllers/Users");
 const auth = require("./../controllers/Auth");
 const verify = require("./verifyToken");
 
 const router = express.Router();
 
-router.get("/reservations", verify, reservations.getReservations);
-router.get("/reservations/:id", verify, reservations.getReservationById);
-router.post("/reservations/add", verify, reservations.addReservation);
-router.put("/reservations/update/:id", verify, reservations.updateReservation);
-router.delete("/reservations/delete/:id", verify, reservations.deleteReservation);
+router.get("/answers", verify, answers.getAnswers);
+router.get("/answers/:id", verify, answers.getAnswerById);
+router.post("/answers/add", verify, answers.addAnswer);
+router.put("/answers/update/:id", verify, answers.updateAnswer);
+router.delete("/answers/delete/:id", verify, answers.deleteAnswer);
 
-router.get("/groups", verify, groups.getGroups);
-router.get("/groups/:id", verify, groups.getGroupById);
-router.post("/groups/add", verify, groups.addGroup);
-router.put("/groups/update/:id", verify, groups.updateGroup);
-router.delete("/groups/delete/:id", verify, groups.deleteGroup);
-
-router.get("/items", verify, items.getItems);
-router.get("/items/:id", verify, items.getItemById);
-router.post("/items/add", verify, items.addItem);
-router.put("/items/update/:id", verify, items.updateItem);
-router.delete("/items/delete/:id", verify, items.deleteItem);
-
-router.get("/dictionaries/groups", verify, dictionaries.groups);
-router.get("/dictionaries/items", verify, dictionaries.items);
+router.get("/surveys", verify, surveys.getSurveys);
+router.get("/surveys/:id", verify, surveys.getSurveyById);
+router.post("/surveys/add", verify, surveys.addSurvey);
+router.put("/surveys/update/:id", verify, surveys.updateSurvey);
+router.delete("/surveys/delete/:id", verify, surveys.deleteSurvey);
 
 router.get("/user", verify, users.getCurrentUser);
 

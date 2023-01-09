@@ -1,79 +1,80 @@
 const { commonErrors } = require("../utils/commonErrors");
-const Groups = require("./../models/Groups");
+const Surveys = require("../models/Surveys");
 const selectData = require("./../utils/selectData");
 
-// get all groups
-const getGroups = async (req, res) => {
+// get all surveys
+const getSurveys = async (req, res) => {
   try {
-    const groups = await Groups.findAll({
+    const answers = await Surveys.findAll({
       where: {
         ...selectData.byUserId(req),
       },
     });
-    return res.send(groups);
+    return res.send(answers);
   } catch (err) {
     return commonErrors[500];
   }
 };
 
-// get group by id
-const getGroupById = async (req, res) => {
+// get survey by id
+const getSurveyById = async (req, res) => {
   try {
-    const group = await Groups.findOne({
+    const answer = await Surveys.findOne({
       where: {
         id: req.params.id,
         ...selectData.byUserId(req),
       },
     });
-    return res.send(group);
+    return res.send(answer);
   } catch (err) {
     return commonErrors[500];
   }
 };
 
-// add group
-const addGroup = async (req, res) => {
+// add survey
+const addSurvey = async (req, res) => {
+  console.log(req.body);
   try {
-    await Groups.create({
+    await Surveys.create({
       ...req.body,
       ...selectData.byUserId(req),
     });
     return res.json({
-      message: "Group Created",
+      message: "Survey Created",
     });
   } catch (err) {
     return commonErrors[500];
   }
 };
 
-// update group
-const updateGroup = async (req, res) => {
+// update survey
+const updateSurvey = async (req, res) => {
   try {
-    await Groups.update(req.body, {
+    await Surveys.update(req.body, {
       where: {
         id: req.params.id,
         ...selectData.byUserId(req),
       },
     });
     return res.json({
-      message: "Group Success Updated",
+      message: "Survey Success Update",
     });
   } catch (err) {
     return commonErrors[500];
   }
 };
 
-// delete group
-const deleteGroup = async (req, res) => {
+// delete survey
+const deleteSurvey = async (req, res) => {
   try {
-    await Groups.destroy({
+    await Surveys.destroy({
       where: {
         id: req.params.id,
         ...selectData.byUserId(req),
       },
     });
     return res.json({
-      message: "Group Success Deleted",
+      message: "Survey Success Delete",
     });
   } catch (err) {
     return commonErrors[500];
@@ -81,9 +82,9 @@ const deleteGroup = async (req, res) => {
 };
 
 module.exports = {
-  getGroups,
-  getGroupById,
-  addGroup,
-  updateGroup,
-  deleteGroup,
+  getSurveys,
+  getSurveyById,
+  addSurvey,
+  updateSurvey,
+  deleteSurvey,
 };
