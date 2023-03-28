@@ -2,7 +2,6 @@ const express = require("express");
 
 const answers = require("../controllers/Answers");
 const surveys = require("../controllers/Surveys");
-const users = require("./../controllers/Users");
 const auth = require("./../controllers/Auth");
 const verify = require("./verifyToken");
 
@@ -19,8 +18,6 @@ router.get("/surveys/:id", verify, surveys.getSurveyById);
 router.post("/surveys/add", verify, surveys.addSurvey);
 router.put("/surveys/update/:id", verify, surveys.updateSurvey);
 router.delete("/surveys/delete/:id", verify, surveys.deleteSurvey);
-
-router.get("/user", verify, users.getCurrentUser);
 
 router.post("/register", auth.registerUser);
 router.post("/login", auth.loginUser);

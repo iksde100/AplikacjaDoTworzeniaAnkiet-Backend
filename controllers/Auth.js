@@ -41,8 +41,10 @@ const registerUser = async (req, res) => {
   };
   try {
     await Users.create(user);
-    return res.json({
-      message: "User Registered",
+    // Create and assign a token
+    const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET);
+    return res.header("auth-token", token).send({
+      jwt: token,
     });
   } catch (err) {
     return commonErrors[500];
